@@ -1,0 +1,89 @@
+@model inven_edu.Models.ViewModels.InventoryItemViewModel
+@{
+    ViewData["Title"] = "Item Details";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-box"></i> Item Details</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Item Name:</strong></div>
+                        <div class="col-md-8">@Model.Name</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Category:</strong></div>
+                        <div class="col-md-8">@Model.CategoryName</div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Description:</strong></div>
+                            <div class="col-md-8">@Model.Description</div>
+                        </div>
+                    }
+
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Available Quantity:</strong></div>
+                        <div class="col-md-8">
+                            @if (Model.IsOutOfStock)
+                            {
+                                <span class="badge badge-danger badge-lg">Out of Stock (0)</span>
+                            }
+                            else if (Model.IsLowStock)
+                            {
+                                <span class="badge badge-warning badge-lg">@Model.Quantity (Low Stock)</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-success badge-lg">@Model.Quantity</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Minimum Stock Level:</strong></div>
+                        <div class="col-md-8">@Model.MinimumStock</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Added Date:</strong></div>
+                        <div class="col-md-8">@Model.CreatedDate.ToString("MMMM dd, yyyy")</div>
+                    </div>
+
+                    @if (Model.UpdatedDate.HasValue)
+                    {
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Last Updated:</strong></div>
+                            <div class="col-md-8">@Model.UpdatedDate.Value.ToString("MMMM dd, yyyy")</div>
+                        </div>
+                    }
+
+                    @if (Model.IsOutOfStock)
+                    {
+                        <div class="alert alert-danger mt-4">
+                            <i class="fas fa-exclamation-circle"></i> This item is currently out of stock. Please contact the inventory office for availability.
+                        </div>
+                    }
+                    else if (Model.IsLowStock)
+                    {
+                        <div class="alert alert-warning mt-4">
+                            <i class="fas fa-exclamation-triangle"></i> This item has low stock. Limited quantity available.
+                        </div>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a asp-action="BrowseInventory" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Inventory
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

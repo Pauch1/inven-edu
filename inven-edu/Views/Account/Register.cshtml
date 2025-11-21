@@ -1,0 +1,81 @@
+@model inven_edu.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - InvenEdu</title>
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card fade-in">
+            <div class="auth-logo">
+                <i class="fas fa-box"></i> InvenEdu
+            </div>
+            <h2 class="text-center mb-4">Create Your Account</h2>
+
+            <form asp-action="Register" asp-controller="Account" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" placeholder="First name" autocomplete="given-name" />
+                            <span asp-validation-for="FirstName" class="invalid-feedback"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" placeholder="Last name" autocomplete="family-name" />
+                            <span asp-validation-for="LastName" class="invalid-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="your.email@example.com" autocomplete="email" />
+                    <span asp-validation-for="Email" class="invalid-feedback"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control" placeholder="Minimum 6 characters" autocomplete="new-password" />
+                    <span asp-validation-for="Password" class="invalid-feedback"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Re-enter password" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="invalid-feedback"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+
+                <div class="text-center mt-3">
+                    <p class="text-secondary">
+                        Already have an account? 
+                        <a asp-action="Login" asp-controller="Account">Login here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

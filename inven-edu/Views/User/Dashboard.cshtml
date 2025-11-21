@@ -1,0 +1,151 @@
+@model inven_edu.Models.ViewModels.UserDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4"><i class="fas fa-tachometer-alt"></i> Welcome, @Model.UserName!</h1>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="stats-card">
+                <div class="stats-value">@Model.TotalItemsIssued</div>
+                <div class="stats-label">
+                    <i class="fas fa-boxes"></i> Total Items Issued
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card">
+                <div class="stats-value">@Model.CurrentlyHolding</div>
+                <div class="stats-label">
+                    <i class="fas fa-hand-holding"></i> Currently Holding
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card" style="background: linear-gradient(135deg, #FFE69C, #FFC107);">
+                <div class="stats-value" style="color: #856404;">@Model.OverdueItems</div>
+                <div class="stats-label" style="color: #856404;">
+                    <i class="fas fa-exclamation-triangle"></i> Overdue Items
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Issuances -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-hand-holding"></i> Active Issuances</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.ActiveIssuances.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Issued Date</th>
+                                <th>Expected Return</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var issuance in Model.ActiveIssuances)
+                            {
+                                <tr class="@(issuance.IsOverdue ? "table-warning" : "")">
+                                    <td><strong>@issuance.ItemName</strong></td>
+                                    <td>@issuance.QuantityIssued</td>
+                                    <td>@issuance.IssuedDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        @if (issuance.ReturnDate.HasValue)
+                                        {
+                                            @issuance.ReturnDate.Value.ToString("MMM dd, yyyy")
+                                            @if (issuance.IsOverdue)
+                                            {
+                                                <br /><span class="badge badge-danger">Overdue!</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td><span class="badge badge-info">@issuance.Status</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-center text-secondary">
+                    <i class="fas fa-check-circle"></i> You have no active issuances.
+                </p>
+            }
+        </div>
+        <div class="card-footer">
+            <a asp-action="MyIssuances" class="btn btn-outline">
+                <i class="fas fa-list"></i> View All My Issuances
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Issuance History -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-history"></i> Recent History</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.RecentIssuances.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Issued Date</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var issuance in Model.RecentIssuances)
+                            {
+                                <tr>
+                                    <td>@issuance.ItemName</td>
+                                    <td>@issuance.QuantityIssued</td>
+                                    <td>@issuance.IssuedDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        @if (issuance.Status == "Issued")
+                                        {
+                                            <span class="badge badge-info">@issuance.Status</span>
+                                        }
+                                        else if (issuance.Status == "Returned")
+                                        {
+                                            <span class="badge badge-success">@issuance.Status</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">@issuance.Status</span>
+                                        }
+                                    </td>
+                                    <td>@(issuance.Notes ?? "-")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-center text-secondary">No issuance history.</p>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+@model inven_edu.Models.ViewModels.IssuanceSearchViewModel
+@{
+    ViewData["Title"] = "My Issuances";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4"><i class="fas fa-list"></i> My Issuance History</h1>
+
+    <!-- Filter -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="MyIssuances" method="get">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Status" class="form-label"></label>
+                            <select asp-for="Status" class="form-control">
+                                <option value="">All Status</option>
+                                <option value="Issued">Active</option>
+                                <option value="Returned">Returned</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>
+                            <a asp-action="MyIssuances" class="btn btn-secondary">
+                                <i class="fas fa-redo"></i> Clear
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Issuances Table -->
+    <div class="card">
+        <div class="card-body">
+            @if (Model.Issuances.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Issued Date</th>
+                                <th>Expected Return</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var issuance in Model.Issuances)
+                            {
+                                <tr class="@(issuance.IsOverdue && issuance.Status == "Issued" ? "table-warning" : "")">
+                                    <td><strong>@issuance.ItemName</strong></td>
+                                    <td>@issuance.QuantityIssued</td>
+                                    <td>@issuance.IssuedDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        @if (issuance.ReturnDate.HasValue)
+                                        {
+                                            @issuance.ReturnDate.Value.ToString("MMM dd, yyyy")
+                                            @if (issuance.IsOverdue && issuance.Status == "Issued")
+                                            {
+                                                <br /><span class="badge badge-danger">Overdue</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (issuance.Status == "Issued")
+                                        {
+                                            <span class="badge badge-info">Active</span>
+                                        }
+                                        else if (issuance.Status == "Returned")
+                                        {
+                                            <span class="badge badge-success">Returned</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">@issuance.Status</span>
+                                        }
+                                    </td>
+                                    <td>@(issuance.Notes ?? "-")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <ul class="pagination">
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" asp-action="MyIssuances" asp-route-pageNumber="@i" asp-route-status="@Model.Status">@i</a>
+                            </li>
+                        }
+                    </ul>
+                }
+                <p class="text-muted text-center">Showing @Model.Issuances.Count of @Model.TotalItems issuances</p>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle"></i> You have no issuances.
+                </div>
+            }
+        </div>
+    </div>
+</div>

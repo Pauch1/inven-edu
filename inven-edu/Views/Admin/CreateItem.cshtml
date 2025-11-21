@@ -1,0 +1,72 @@
+@model inven_edu.Models.ViewModels.InventoryItemViewModel
+@{
+    ViewData["Title"] = "Create Inventory Item";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-plus"></i> Create New Inventory Item</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateItem" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="form-group">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter item name" />
+                            <span asp-validation-for="Name" class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter item description (optional)"></textarea>
+                            <span asp-validation-for="Description" class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CategoryId" class="form-label"></label>
+                                    <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))">
+                                        <option value="">-- Select Category --</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="invalid-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Quantity" class="form-label"></label>
+                                    <input asp-for="Quantity" class="form-control" type="number" min="0" />
+                                    <span asp-validation-for="Quantity" class="invalid-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="MinimumStock" class="form-label"></label>
+                            <input asp-for="MinimumStock" class="form-control" type="number" min="0" />
+                            <span asp-validation-for="MinimumStock" class="invalid-feedback"></span>
+                            <small class="form-text">You will be alerted when stock falls below this level</small>
+                        </div>
+
+                        <div class="action-buttons mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Create Item
+                            </button>
+                            <a asp-action="Inventory" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

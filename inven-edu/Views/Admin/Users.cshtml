@@ -1,0 +1,107 @@
+@model inven_edu.Models.ViewModels.ManageUsersViewModel
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4"><i class="fas fa-users"></i> User Management</h1>
+
+    <!-- Search and Filter -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="Users" method="get">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="searchTerm" class="form-label">Search</label>
+                            <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by name or email..." />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="form-check">
+                                <input type="checkbox" name="activeOnly" value="true" @(Model.ActiveOnly == true ? "checked" : "") class="form-check-input" />
+                                <label class="form-label">Active Users Only</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="action-buttons">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                                <a asp-action="Users" class="btn btn-secondary">
+                                    <i class="fas fa-redo"></i> Clear
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card">
+        <div class="card-body">
+            @if (Model.Users.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Issuances</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <td><strong>@user.FullName</strong></td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        @if (user.Role == "Admin")
+                                        {
+                                            <span class="badge badge-danger">@user.Role</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-info">@user.Role</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (user.IsActive)
+                                        {
+                                            <span class="badge badge-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>@user.TotalIssuances</td>
+                                    <td>@user.CreatedDate.ToString("MMM dd, yyyy")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted text-center">Total: @Model.Users.Count users</p>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle"></i> No users found.
+                </div>
+            }
+        </div>
+    </div>
+</div>

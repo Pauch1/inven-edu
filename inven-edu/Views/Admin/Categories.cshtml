@@ -1,0 +1,65 @@
+@model List<inven_edu.Models.ViewModels.CategoryViewModel>
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-tags"></i> Category Management</h1>
+        <a asp-action="CreateCategory" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Category
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Items</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var category in Model)
+                            {
+                                <tr>
+                                    <td><strong>@category.Name</strong></td>
+                                    <td>@category.Description</td>
+                                    <td><span class="badge badge-info">@category.ItemCount items</span></td>
+                                    <td>@category.CreatedDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a asp-action="EditCategory" asp-route-id="@category.Id" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <form asp-action="DeleteCategory" asp-route-id="@category.Id" method="post" style="display: inline;"
+                                                  onsubmit="return confirm('Are you sure? This will fail if there are items in this category.');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle"></i> No categories found.  <a asp-action="CreateCategory">Create one</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

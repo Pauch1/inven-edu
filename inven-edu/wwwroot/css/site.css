@@ -1,0 +1,123 @@
+/* ================================================================
+   InvenEdu - Base Site Styles (Bootstrap Overrides)
+   ================================================================ */
+
+html {
+  font-size: 16px;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Bootstrap Focus Override */
+.btn:focus, 
+.btn:active:focus, 
+.btn-link.nav-link:focus, 
+.form-control:focus, 
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(54, 116, 181, 0.25);
+}
+
+/* Ensure body takes full height */
+html,
+body {
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Bootstrap form placeholder alignment fix */
+.form-floating > .form-control-plaintext::placeholder, 
+.form-floating > .form-control::placeholder {
+  color: #6C757D;
+  opacity: 1;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, 
+.form-floating > .form-control:focus::placeholder {
+  opacity: 0.7;
+}
+
+/* Bootstrap override for better consistency with custom styles */
+.form-control {
+  background-color: var(--bg-primary, #fff);
+  color: var(--text-primary, #212529);
+  border-color: var(--border-color, #dee2e6);
+}
+
+.form-control:focus {
+  background-color: var(--bg-primary, #fff);
+  border-color: var(--primary-color, #3674B5);
+  color: var(--text-primary, #212529);
+}
+
+/* Ensure Bootstrap modals work with dark mode */
+.modal-content {
+  background-color: var(--bg-primary, #fff);
+  color: var(--text-primary, #212529);
+  border-color: var(--border-color, #dee2e6);
+}
+
+.modal-header {
+  border-bottom-color: var(--border-color, #dee2e6);
+}
+
+.modal-footer {
+  border-top-color: var(--border-color, #dee2e6);
+}
+
+/* Bootstrap dropdown dark mode support */
+.dropdown-menu {
+  background-color: var(--bg-primary, #fff);
+  border-color: var(--border-color, #dee2e6);
+  box-shadow: var(--shadow-md, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+}
+
+.dropdown-item {
+  color: var(--text-primary, #212529);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--bg-secondary, #f8f9fa);
+  color: var(--primary-color, #3674B5);
+}
+
+/* Bootstrap table enhancements */
+.table {
+  color: var(--text-primary, #212529);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove default margin from last element in containers */
+.container > *:last-child,
+.container-fluid > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Improve link accessibility */
+a:focus-visible {
+  outline: 2px solid var(--primary-color, #3674B5);
+  outline-offset: 2px;
+}
+
+/* Print optimization */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}

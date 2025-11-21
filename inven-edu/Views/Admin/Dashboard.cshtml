@@ -1,0 +1,195 @@
+@model inven_edu.Models.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+    <h1 class="mb-4"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #3674B5, #578FCA);">
+                <div class="dashboard-card-value">@Model.TotalItems</div>
+                <div class="dashboard-card-label">
+                    <i class="fas fa-boxes"></i> Total Items
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #FFC107, #FF9800);">
+                <div class="dashboard-card-value">@Model.LowStockItems</div>
+                <div class="dashboard-card-label">
+                    <i class="fas fa-exclamation-triangle"></i> Low Stock Items
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #DC3545, #C82333);">
+                <div class="dashboard-card-value">@Model.OutOfStockItems</div>
+                <div class="dashboard-card-label">
+                    <i class="fas fa-times-circle"></i> Out of Stock
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #28A745, #218838);">
+                <div class="dashboard-card-value">@Model.ActiveIssuances</div>
+                <div class="dashboard-card-label">
+                    <i class="fas fa-hand-holding"></i> Active Issuances
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #17A2B8, #138496);">
+                <div class="dashboard-card-value">@Model.TotalUsers</div>
+                <div class="dashboard-card-label">
+                    <i class="fas fa-users"></i> Total Users
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #E83E8C, #D63384);">
+                <div class="dashboard-card-value">@Model.OverdueIssuances</div>
+                <div class="dashboard-card-label">
+                    <i class="fas fa-clock"></i> Overdue Items
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-bolt"></i> Quick Actions</h3>
+        </div>
+        <div class="card-body">
+            <div class="action-buttons">
+                <a asp-action="CreateItem" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add New Item
+                </a>
+                <a asp-action="CreateIssuance" class="btn btn-success">
+                    <i class="fas fa-hand-holding"></i> Issue Material
+                </a>
+                <a asp-action="DownloadInventoryReport" class="btn btn-info">
+                    <i class="fas fa-file-pdf"></i> Inventory Report
+                </a>
+                <a asp-action="DownloadIssuanceReport" class="btn btn-secondary">
+                    <i class="fas fa-file-pdf"></i> Issuance Report
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recent Issuances -->
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-history"></i> Recent Issuances</h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentIssuances.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>User</th>
+                                        <th>Quantity</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var issuance in Model.RecentIssuances)
+                                    {
+                                        <tr>
+                                            <td>@issuance.ItemName</td>
+                                            <td>@issuance.UserName</td>
+                                            <td>@issuance.QuantityIssued</td>
+                                            <td>@issuance.IssuedDate.ToString("MMM dd, yyyy")</td>
+                                            <td>
+                                                @if (issuance.Status == "Issued")
+                                                {
+                                                    <span class="badge badge-info">@issuance.Status</span>
+                                                }
+                                                else if (issuance.Status == "Returned")
+                                                {
+                                                    <span class="badge badge-success">@issuance.Status</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-secondary">@issuance.Status</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center text-secondary">No recent issuances.</p>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Issuances" class="btn btn-outline">View All Issuances</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Items -->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i> Low Stock Alerts</h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.LowStockItemsList.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Quantity</th>
+                                        <th>Min. Stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.LowStockItemsList)
+                                    {
+                                        <tr class="@(item.IsOutOfStock ? "table-danger" : "")">
+                                            <td>
+                                                @item.Name
+                                                @if (item.IsOutOfStock)
+                                                {
+                                                    <span class="badge badge-danger">Out of Stock</span>
+                                                }
+                                            </td>
+                                            <td>@item.Quantity</td>
+                                            <td>@item.MinimumStock</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center text-success"><i class="fas fa-check-circle"></i> All items are adequately stocked!</p>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Inventory" asp-route-lowStockOnly="true" class="btn btn-outline">View All Low Stock</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inven-edu", "inven-edu\inven-edu.csproj", "{1CDE9C08-7782-4398-9934-4E63EAE6B05A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CDE9C08-7782-4398-9934-4E63EAE6B05A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CDE9C08-7782-4398-9934-4E63EAE6B05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CDE9C08-7782-4398-9934-4E63EAE6B05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CDE9C08-7782-4398-9934-4E63EAE6B05A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89FE0773-2AE9-422D-B050-39195A38717E}
+	EndGlobalSection
+EndGlobal

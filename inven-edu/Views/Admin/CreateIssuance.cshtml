@@ -1,0 +1,81 @@
+@model inven_edu.Models.ViewModels.CreateIssuanceViewModel
+@{
+    ViewData["Title"] = "Create Issuance";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-hand-holding"></i> Issue Material to User</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateIssuance" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="form-group">
+                            <label asp-for="ItemId" class="form-label"></label>
+                            <select asp-for="ItemId" class="form-control">
+                                <option value="">-- Select Item --</option>
+                                @foreach (var item in Model.AvailableItems)
+                                {
+                                    <option value="@item.Id">@item.Name (Available: @item.Quantity)</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ItemId" class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="UserId" class="form-label"></label>
+                            <select asp-for="UserId" class="form-control">
+                                <option value="">-- Select User --</option>
+                                @foreach (var user in Model.AvailableUsers)
+                                {
+                                    <option value="@user.Id">@user.FullName (@user.Email)</option>
+                                }
+                            </select>
+                            <span asp-validation-for="UserId" class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="QuantityIssued" class="form-label"></label>
+                                    <input asp-for="QuantityIssued" class="form-control" type="number" min="1" />
+                                    <span asp-validation-for="QuantityIssued" class="invalid-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ReturnDate" class="form-label"></label>
+                                    <input asp-for="ReturnDate" class="form-control" type="date" />
+                                    <span asp-validation-for="ReturnDate" class="invalid-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Notes" class="form-label"></label>
+                            <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Optional notes..."></textarea>
+                            <span asp-validation-for="Notes" class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="action-buttons mt-4">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i> Issue Item
+                            </button>
+                            <a asp-action="Issuances" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
